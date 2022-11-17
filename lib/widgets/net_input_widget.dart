@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import 'package:ip_calculator/util/cidr_util.dart';
+import 'package:ip_calculator/util/expand_ip.dart';
 
 class NetMask extends StatelessWidget {
   final String address;
@@ -18,10 +17,10 @@ class NetMask extends StatelessWidget {
       String ip = addressSplit[0];
       int cIDR = int.parse(addressSplit[1]);
       String mask = c.GetMaskFromCIDR(cIDR);
-      return Text('$ip $mask');
+      return Text('${expandip(ip)} $mask');
     } else if (addressSplit.length == 1) {
       String ip = addressSplit[0];
-      return Text('$ip ');
+      return Text('${expandip(ip)} ');
     }
     return const Text(' ');
   }
