@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ip_calculator/util/net_calc_util.dart';
+import 'package:ip_calculator/util/validate_address_util.dart';
 import 'package:ip_calculator/widgets/ip_input_widget.dart';
 import 'package:ip_calculator/widgets/net_input_widget.dart';
 
@@ -27,6 +29,9 @@ class _MyAppState extends State<MyApp> {
   bool imputMaskshow = false;
   String address = "0.0.0.0/0";
 
+  NetCalc netCalc = NetCalc();
+  Validate validate = Validate();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,6 +40,7 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             Container(
+              width: 205,
               color: const Color.fromARGB(255, 248, 248, 248),
               child: Column(
                 children: [
@@ -44,10 +50,17 @@ class _MyAppState extends State<MyApp> {
                       this.address = address;
                     });
                   }),
-                  (imputMaskshow) ? NetMask(address) : const SizedBox(),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child:
+                        (imputMaskshow) ? NetMask(address) : const SizedBox(),
+                  ),
                 ],
               ),
             ),
+            (validate.address(address))
+                ? Text(netCalc.calc(address: address).toString())
+                : const SizedBox(),
             const Spacer(),
           ],
         ),
