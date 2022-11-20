@@ -208,4 +208,13 @@ class CIDR {
       return "Error";
     }
   }
+
+  int GetHostsFromCIDR(int cidr) {
+    if (cidr >= 0 && cidr <= 32) {
+      Map infoCIDR = cirds.firstWhere((c) => c['cidr'] == cidr);
+      return infoCIDR['hosts'];
+    } else {
+      return 0;
+    }
+  }
 }
