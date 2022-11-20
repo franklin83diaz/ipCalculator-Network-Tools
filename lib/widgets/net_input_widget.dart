@@ -10,18 +10,64 @@ class NetMask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CIDR c = CIDR();
-    List<String> addressSplit = address.split("/");
+    final CIDR c = CIDR();
+    final List<String> addressSplit = address.split("/");
 
+    //if has CIDR
     if (addressSplit.length == 2 && addressSplit[1] != "") {
-      String ip = addressSplit[0];
-      int cIDR = int.parse(addressSplit[1]);
-      String mask = c.GetMaskFromCIDR(cIDR);
-      return Text('${expandip(ip)} $mask');
+      return const Text(' ');
+      //just ip
     } else if (addressSplit.length == 1) {
       String ip = addressSplit[0];
-      return Text('${expandip(ip)} ');
+      return (expandip(ip) != "")
+          ? const DropdownButtonMask()
+          : const SizedBox();
     }
     return const Text(' ');
+  }
+}
+
+class DropdownButtonMask extends StatefulWidget {
+  const DropdownButtonMask({super.key});
+
+  @override
+  State<DropdownButtonMask> createState() => _DropdownButtonMaskState();
+}
+
+class _DropdownButtonMaskState extends State<DropdownButtonMask> {
+  final CIDR c = CIDR();
+  late String mask;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    mask = "255.255.255.255";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      icon: const Icon(Icons.arrow_downward),
+      value: mask,
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          mask = value ?? "255.255.255.255";
+        });
+      },
+      items: c.cirds.map<DropdownMenuItem<String>>((Map value) {
+        return DropdownMenuItem<String>(
+          value: value['mask'],
+          child: Text("${value['mask']}  (/${value['cidr']})"),
+        );
+      }).toList(),
+    );
   }
 }
