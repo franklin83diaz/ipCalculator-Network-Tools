@@ -13,7 +13,7 @@ class Validate {
         (inputSplit.length == 2) ? int.tryParse(inputSplit.last) : null;
 
     //Error by bad mask number less 0 or more 32
-    if (mask != null && (mask > 32 || mask < 1)) {
+    if (mask != null && (mask > 32 || mask < 0)) {
       return false;
     }
 
