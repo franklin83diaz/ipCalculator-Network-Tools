@@ -12,7 +12,11 @@ class NetCalc {
 
     final ipsplit = expandip(addressSplit[0]).split(".");
     final int hosts = c.GetHostsFromCIDR(cidr);
+    final netmask = c.GetMaskFromCIDR(cidr);
 
+    if (address.contains("..")) {
+      return {};
+    }
     if (ipsplit.length != 4) return {};
 
     final int ipDecimal = (int.parse(ipsplit[0]) * 16777216) +
@@ -26,14 +30,15 @@ class NetCalc {
     int broadcastDecimal = networkDecimal + hosts - 1;
 
     return {
-      "network": DecimalToIp(networkDecimal),
-      "broadcast": DecimalToIp(broadcastDecimal),
+      "network": decimalToIp(networkDecimal),
+      "broadcast": decimalToIp(broadcastDecimal),
+      "netmask": netmask
     };
   }
 }
 
 //Parse Decimal to IP
-String DecimalToIp(int dIp) {
+String decimalToIp(int dIp) {
   int secIP1 = (dIp / 16777216).floor();
   dIp -= (secIP1 * 16777216);
   int secIP2 = (dIp / 65536).floor();

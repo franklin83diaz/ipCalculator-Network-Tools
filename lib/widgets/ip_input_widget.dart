@@ -20,7 +20,7 @@ class _IpInputState extends State<IpInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8, left: 8),
       child: SizedBox(
         width: 205,
         child: TextField(
@@ -37,12 +37,12 @@ class _IpInputState extends State<IpInput> {
             if (validate.address(value)) {
               setState(() {
                 errorIp = false;
-                widget.onTap(true, ipImput.text);
+                widget.onTap(true, ipImput.text, null);
               });
             } else {
               setState(() {
                 errorIp = true;
-                widget.onTap(false, ipImput.text);
+                widget.onTap(false, ipImput.text, null);
               });
             }
           },
@@ -51,7 +51,7 @@ class _IpInputState extends State<IpInput> {
                 const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
             border: const OutlineInputBorder(),
             errorText: errorIp ? "ip format error!" : null,
-            hintText: "10.0.0.1/8",
+            hintText: "0.0.0.0/32",
             prefixIconColor: Colors.white,
           ),
         ),

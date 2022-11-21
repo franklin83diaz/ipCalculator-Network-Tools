@@ -44,4 +44,36 @@ class Validate {
     }
     return true;
   }
+
+  bool addressDone(ipImput) {
+    //separate ip and mask
+    final List<String> inputSplit = ipImput.split("/");
+
+    //set IP
+    final String ip = inputSplit.first;
+
+    //set Mask
+    final int? mask =
+        (inputSplit.length == 2) ? int.tryParse(inputSplit.last) : null;
+
+    //Error by bad mask number less 0 or more 32
+    if (mask != null && (mask > 32 || mask < 0)) {
+      return false;
+    }
+
+    //Error format: more of one "/"
+    if (inputSplit.length > 2) {
+      return false;
+    }
+    //Error format:  "..""
+    if (ip.contains("..")) {
+      return false;
+    }
+    //Error format:  more of 4 number
+    if (ip.split(".").length != 4) {
+      return false;
+    }
+
+    return true;
+  }
 }

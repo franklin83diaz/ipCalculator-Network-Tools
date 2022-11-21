@@ -5,8 +5,10 @@ import 'package:ip_calculator/util/expand_ip.dart';
 
 class NetMask extends StatelessWidget {
   final String address;
+  final Function(String cidr) onTap;
 
-  const NetMask(this.address, {Key? key}) : super(key: key);
+  const NetMask(this.address, {Key? key, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,20 +17,21 @@ class NetMask extends StatelessWidget {
 
     //if has CIDR
     if (addressSplit.length == 2 && addressSplit[1] != "") {
-      return const Text(' ');
+      return const SizedBox();
       //just ip
     } else if (addressSplit.length == 1) {
       String ip = addressSplit[0];
       return (expandip(ip) != "")
-          ? const DropdownButtonMask()
+          ? DropdownButtonMask(onTap: onTap)
           : const SizedBox();
     }
-    return const Text(' ');
+    return const SizedBox();
   }
 }
 
 class DropdownButtonMask extends StatefulWidget {
-  const DropdownButtonMask({super.key});
+  final Function onTap;
+  const DropdownButtonMask({super.key, required this.onTap});
 
   @override
   State<DropdownButtonMask> createState() => _DropdownButtonMaskState();
@@ -40,7 +43,6 @@ class _DropdownButtonMaskState extends State<DropdownButtonMask> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     mask = "255.255.255.255";
   }
@@ -48,7 +50,7 @@ class _DropdownButtonMaskState extends State<DropdownButtonMask> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
-      icon: const Icon(Icons.arrow_downward),
+      icon: const Icon(Icons.arrow_downward, color: Colors.deepPurple),
       value: mask,
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
@@ -58,6 +60,7 @@ class _DropdownButtonMaskState extends State<DropdownButtonMask> {
       ),
       onChanged: (String? value) {
         // This is called when the user selects an item.
+        widget.onTap(value);
         setState(() {
           mask = value ?? "255.255.255.255";
         });
